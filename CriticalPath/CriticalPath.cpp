@@ -18,7 +18,12 @@ bool critical_path(const graph_d& G)
 	v_earliest = new dur_t[G.n];
 	v_latest = new dur_t[G.n];
 	if (tpl_sort(G) == false)
+	{
+		delete[] tpl_order;
+		delete[] v_earliest;
+		delete[] v_latest;
 		return false;		// circuit exists, not DAG!
+	}
 	// initialize v_latest
 	for (i = 0; i < G.n; ++i)
 		v_latest[i] = v_earliest[G.n - 1];
