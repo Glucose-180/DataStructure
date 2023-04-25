@@ -11,6 +11,7 @@ static inline dur_t umin(const dur_t X, const dur_t Y);
 bool critical_path(const graph_d& G)
 {
 	size_t i, j;
+	size_t end;		// the end vertex, or last activity
 	dur_t e_earliest, e_latest;	// for edges, or activities
 	gol_node* p;
 
@@ -24,9 +25,10 @@ bool critical_path(const graph_d& G)
 		delete[] v_latest;
 		return false;		// circuit exists, not DAG!
 	}
+	end = tpl_order[G.n - 1];
 	// initialize v_latest
 	for (i = 0; i < G.n; ++i)
-		v_latest[i] = v_earliest[G.n - 1];
+		v_latest[i] = v_earliest[end];
 	while (i > 0)
 	{
 		j = tpl_order[--i];
