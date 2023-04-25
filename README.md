@@ -31,3 +31,11 @@ input.txt 为输入样例。（在多源文件的程序中）以某种物质的�
 #### MinimumSpanningTree
 
 给定连通无向图，计算它的最小生成树。
+
+#### CriticalPath
+
+给定有向无环图（AOE 网），计算它的关键路径（关键活动）。
+
+#### ShortestPath
+
+用 Dijkstra 算法计算有向图的最短路径。
