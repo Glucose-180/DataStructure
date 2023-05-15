@@ -5,7 +5,7 @@
 #include <stdint.h>
 
 #ifndef EM
-	#define EM 9U
+#define EM 9U
 #endif
 
 enum Tag_t { FREE, OCCUPIED };
@@ -16,7 +16,7 @@ typedef struct header {
 	struct header* next;
 } header;
 
-int8_t allocbuf[1U << EM];
+extern int8_t allocbuf[1U << EM];
 
 void bs_init(void);
 void* bs_malloc(const uint32_t Size);

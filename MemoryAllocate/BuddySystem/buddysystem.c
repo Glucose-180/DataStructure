@@ -97,7 +97,7 @@ static inline header* buddy(header* const P)
 
 	loc = (int8_t*)P - allocbuf;
 	k = P->log2size;
-	if ((loc >> k + 1) << k + 1 == loc)	/* loc MOD 2^(k+1) == 0 */
+	if ((loc >> (k + 1)) << (k + 1) == loc)	/* loc MOD 2^(k+1) == 0 */
 		return (header*)((uint8_t*)P + (1U << k));
 	else
 		return (header*)((uint8_t*)P - (1U << k));
