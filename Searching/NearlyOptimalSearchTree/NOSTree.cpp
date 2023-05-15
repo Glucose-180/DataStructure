@@ -1,12 +1,13 @@
 #include "NOSTree.h"
 
-static treenode* _NOSTree(const data_t* const R, weight_t* const Sw, const int Low, const int High);
+static treenode* _NOSTree(const data_t* const R, const weight_t* const Sw, const int Low, const int High);
 static inline weight_t wabs(const weight_t X);
 
 /* Generate a Nearly optimal search tree from R[0] to R[N-1] with weight W[...] */
-treenode* generate_NOST(const data_t* const R, weight_t* const W, const int N)
+treenode* generate_NOST(const data_t* const R, const weight_t* const W, const int N)
 {
 	weight_t* sw;
+	treenode* rt;
 	int i;
 
 	if (N <= 0)
@@ -15,10 +16,12 @@ treenode* generate_NOST(const data_t* const R, weight_t* const W, const int N)
 	*sw++ = 0;
 	for (i = 0; i < N; ++i)
 		sw[i] = sw[i - 1] + W[i];
-	return _NOSTree(R, sw, 0, N - 1);
+	rt = _NOSTree(R, sw, 0, N - 1);
+	delete[](--sw);
+	return rt;
 }
 
-static treenode* _NOSTree(const data_t* const R, weight_t* const Sw, const int Low, const int High)
+static treenode* _NOSTree(const data_t* const R, const weight_t* const Sw, const int Low, const int High)
 {
 	int i, k = Low - 1;
 	weight_t wmin;

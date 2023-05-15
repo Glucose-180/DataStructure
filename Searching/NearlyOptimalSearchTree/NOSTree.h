@@ -14,7 +14,7 @@ struct treenode {
 	treenode* left, * right;
 };
 
-treenode* generate_NOST(const data_t* const R, weight_t* const W, const int N);
+treenode* generate_NOST(const data_t* const R, const weight_t* const W, const int N);
 treenode* search(treenode* const T, const data_t K);
 
 #endif
