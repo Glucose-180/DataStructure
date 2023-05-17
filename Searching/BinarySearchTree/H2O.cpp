@@ -8,6 +8,7 @@ int main()
 	data_t dt, target;
 	char c;
 
+
 	do {
 		cin >> dt;
 		cin.get(c);
@@ -16,21 +17,39 @@ int main()
 	cout << "==============" << endl;
 	BST_print(t, false, " ");
 	cout << endl;
-	BST_print(t, true);
+	BST_print(t, true, "--");
 	cout << "==============" << endl;
-	while (cin >> target)
+	while (cin >> c >> target)
 	{
-		BST_search(t, target, rp, rt);
-		if (rp == NULL)
-			cout << "NULL";
-		else
-			cout << rp->data;
-		cout << '\t';
-		if (rt == NULL)
-			cout << "NULL";
-		else
-			cout << rt->data;
+		if (c == 's')
+		{	// search
+			BST_search(t, target, rp, rt);
+			if (rp == NULL)
+				cout << "NULL";
+			else
+				cout << rp->data;
+			cout << '\t';
+			if (rt == NULL)
+				cout << "NULL";
+			else
+				cout << rt->data;
+			cout << endl;
+		}
+		else if (c == 'd')
+		{	// delete
+			t = BST_delete_node(t, target);
+		}
+		else if (c == 'a')
+		{	// add
+			t = BST_add_node(t, target);
+		}
+		if (c == 's')
+			continue;
+		cout << "==============" << endl;
+		BST_print(t, false, " ");
 		cout << endl;
+		BST_print(t, true, "--");
+		cout << "==============" << endl;
 	}
 	return 0;
 }

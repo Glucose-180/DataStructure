@@ -19,7 +19,7 @@ treenode* BST_add_node(treenode* const T, const data_t D)
 	{
 		crt = BST_cmp(D, p->data);
 		if (crt == 0)
-			return NULL;	// D already exists
+			return T;	// D already exists
 		else if (crt > 0)	// D > p->data
 			if (p->right != NULL)
 				p = p->right;
@@ -81,7 +81,14 @@ void BST_print(const treenode* const T, bool concave, const char* const Tab, con
 		for (i = 0; i < Level; ++i)
 			std::cout << Tab;
 		std::cout << T->data << std::endl;
-		BST_print(T->left, true, Tab, Level + 1);
+		if (T->left == NULL && T->right != NULL)
+		{
+			for (i = 0; i <= Level; ++i)
+				std::cout << Tab;
+			std::cout << std::endl;
+		}
+		else
+			BST_print(T->left, true, Tab, Level + 1);
 		BST_print(T->right, true, Tab, Level + 1);
 	}
 	else
@@ -91,5 +98,48 @@ void BST_print(const treenode* const T, bool concave, const char* const Tab, con
 		BST_print(T->right, false, Tab, Level + 1);
 		if (Level == 0U)
 			std::cout << std::endl;
+	}
+}
+
+/* Delete node D in BST T. */
+treenode* BST_delete_node(treenode* const T, const data_t D)
+{
+	treenode* f, * p, * s;
+
+	if (BST_search(T, D, f, p) == false || p == NULL)
+		return T;	// not found
+	if (p->left != NULL && p->right != NULL)
+	{
+		s = p->right;
+		f = p;
+		while (s->left != NULL)
+		{	// find the adjacent next node of p
+			f = s;
+			s = s->left;
+		}
+		p->data = s->data;
+		p = s;
+		// now p points to the real node to be deleted
+		// and f points to the parent of p
+	}
+	// now p cannot have two children
+	if (p->left != NULL)
+		s = p->left;
+	else
+		s = p->right;
+	// s points to the only child of p or NULL
+	if (f == NULL)
+	{	// p is actually the root
+		delete p;
+		return s;
+	}
+	else
+	{	// hang s on f
+		if (BST_cmp(p->data, f->data) < 0)
+			f->left = s;
+		else
+			f->right = s;
+		delete p;
+		return T;
 	}
 }
