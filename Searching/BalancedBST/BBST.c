@@ -10,7 +10,7 @@ static bool_t flag_taller;
 * 但如果新建结点失败，则会返回空指针 NULL。 */
 BBST_node* BBST_insert(BBST_node* const R, const data_t D)
 {
-	BBST_node* p;	/* 指向新的根 */
+	BBST_node* p = NULL;	/* 指向新的根 */
 
 	if (R == NULL)
 	{
