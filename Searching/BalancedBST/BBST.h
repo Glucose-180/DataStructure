@@ -21,6 +21,14 @@ typedef struct BBST_node {
 	struct BBST_node* left, * right;
 } BBST_node;
 
+/* BBST_search 函数的返回类型 */
+typedef struct BBST_srt_t {
+	BBST_node* tar,	/* 指向待搜索的目标结点 */
+		* par;	/* 指向其父母 */
+	BBST_node** path;	/* 从根结点到目标结点的路径，以 NULL 结尾。 */
+} BBST_srt_t;
+
+extern unsigned int BBST_ymr;
 
 BBST_node* balance_L(BBST_node* const R);
 BBST_node* balance_R(BBST_node* const R);
@@ -38,5 +46,7 @@ static inline int dt_comp(const data_t X, const data_t Y)
 }
 
 BBST_node* BBST_insert(BBST_node* const R, const data_t D);
+BBST_srt_t BBST_search(BBST_node* const T, const data_t D);
+unsigned int BBST_get_max_depth(void);
 
 #endif

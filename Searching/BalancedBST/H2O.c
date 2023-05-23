@@ -7,12 +7,24 @@ int main()
 {
 	BBST_node* pt = NULL;
 	data_t dt;
+	char cmd[5];
+	BBST_srt_t rtemp;
 
-	while (scanf("%d", &dt) == 1)
+	while (scanf("%s%d", cmd, &dt) == 2)
 	{
 		puts("======================");
-		pt = BBST_insert(pt, dt);
-		BBST_print(pt, True, "--", 0U);
+		switch (cmd[0])
+		{
+		case 'i':	/* 插入 */
+			pt = BBST_insert(pt, dt);
+			BBST_print(pt, True, "--", 0U);
+			break;
+		case 's':	/* 搜索 */
+			rtemp = BBST_search(pt, dt);
+			while (rtemp.path != NULL && *(rtemp.path) != NULL)
+				printf("%d ", (*(rtemp.path++))->data);
+			putchar('\n');
+		}
 		puts("======================");
 	}
 	return 0;
