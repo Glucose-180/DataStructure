@@ -4,7 +4,7 @@
 #include "BBST.h"
 
 /* 对以 R 为根的子树做左单旋转 */
-static BBST_node* rotate_L(BBST_node* const R)
+BBST_node* rotate_L(BBST_node* const R)
 {
 	BBST_node* rc;
 
@@ -15,7 +15,7 @@ static BBST_node* rotate_L(BBST_node* const R)
 }
 
 /* 对以 R 为根的子树做右单旋转 */
-static BBST_node* rotate_R(BBST_node* const R)
+BBST_node* rotate_R(BBST_node* const R)
 {
 	BBST_node* lc;
 
@@ -26,7 +26,7 @@ static BBST_node* rotate_R(BBST_node* const R)
 }
 
 /* 对以 R 为根的子树做左右双旋 */
-static BBST_node* rotate_LR(BBST_node* const R)
+BBST_node* rotate_LR(BBST_node* const R)
 {
 	BBST_node* lc, * rc;
 	BBST_node* p;	/* 指向新的根 */
@@ -44,7 +44,7 @@ static BBST_node* rotate_LR(BBST_node* const R)
 }
 
 /* 对以 R 为根的子树做右左双旋 */
-static BBST_node* rotate_RL(BBST_node* const R)
+BBST_node* rotate_RL(BBST_node* const R)
 {
 	BBST_node* lc, * rc;
 	BBST_node* p;	/* 指向新的根 */

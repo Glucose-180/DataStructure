@@ -30,6 +30,11 @@ typedef struct BBST_srt_t {
 
 extern unsigned int BBST_ymr;
 
+
+BBST_node* rotate_L(BBST_node* const R);
+BBST_node* rotate_R(BBST_node* const R);
+BBST_node* rotate_LR(BBST_node* const R);
+BBST_node* rotate_RL(BBST_node* const R);
 BBST_node* balance_L(BBST_node* const R);
 BBST_node* balance_R(BBST_node* const R);
 
@@ -47,6 +52,7 @@ static inline int dt_comp(const data_t X, const data_t Y)
 
 BBST_node* BBST_insert(BBST_node* const R, const data_t D);
 BBST_srt_t BBST_search(BBST_node* const T, const data_t D);
+BBST_node* BBST_delete(BBST_node* const R, const data_t D);
 unsigned int BBST_get_max_depth(void);
 
 #endif

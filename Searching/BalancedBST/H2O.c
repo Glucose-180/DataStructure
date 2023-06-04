@@ -19,6 +19,10 @@ int main()
 			pt = BBST_insert(pt, dt);
 			BBST_print(pt, True, "--", 0U);
 			break;
+		case 'd':	/* 删除 */
+			pt = BBST_delete(pt, dt);
+			BBST_print(pt, True, "--", 0U);
+			break;
 		case 's':	/* 搜索 */
 			rtemp = BBST_search(pt, dt);
 			while (rtemp.path != NULL && *(rtemp.path) != NULL)
