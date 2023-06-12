@@ -6,6 +6,12 @@ typedef int data_t;
 unsigned int bubblesort_g(data_t* const D, const unsigned int N);
 unsigned int qsort_g(data_t* const D, const unsigned int L, const unsigned int R);
 unsigned int heapsort_g(data_t* const H, const unsigned int N);
+unsigned int mergesort_g(data_t* const D, data_t* const Buf, const unsigned int L, const unsigned int R);
+
+// Size of buffer, also used for mergesort
+const unsigned int N = 100;
+
+extern data_t buffer[N];
 
 static inline int dt_comp(const data_t X, const data_t Y)
 {

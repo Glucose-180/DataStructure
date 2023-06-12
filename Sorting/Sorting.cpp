@@ -1,5 +1,7 @@
 #include "Sorting.h"
 
+data_t buffer[N];
+
 // Every sorting function returns count of swapping or moving
 
 // Public swap function
@@ -98,5 +100,37 @@ unsigned int heapsort_g(data_t* const H, const unsigned int N)
 		ymr += heapadjust(H, 0U, i);
 		// now data including H[i] has been sorted
 	}
+	return ymr;
+}
+
+unsigned int mergesort_g(data_t* const D, data_t* const Buf, const unsigned int L, const unsigned int R)
+{
+	unsigned int ymr = 0U;
+	unsigned int m = (L + R) / 2, i, j, k;
+
+	if (L >= R)
+		return ymr;
+
+	// recursion
+	ymr += mergesort_g(D, Buf, L, m);
+	ymr += mergesort_g(D, Buf, m + 1, R);
+
+	// merging
+	for (i = k = L, j = m + 1; i <= m && j <= R; ++k)
+	{
+		++ymr;
+		if (D[i] < D[j])
+			Buf[k] = D[i++];
+		else
+			Buf[k] = D[j++];
+	}
+	while (i <= m)
+		Buf[k++] = D[i++], ++ymr;
+	while (j <= R)
+		Buf[k++] = D[j++], ++ymr;
+
+	// copying
+	for (k = L; k <= R; ++k)
+		D[k] = Buf[k];
 	return ymr;
 }
