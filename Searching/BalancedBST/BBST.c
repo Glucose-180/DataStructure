@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <math.h>
 #include "BBST.h"
 
 /* 子树“长高”标志，仅供 BBST_insert 函数使用！ */
@@ -194,6 +195,7 @@ BBST_node* BBST_delete(BBST_node* const R, const data_t D)
 		else
 			temp = R->right;
 		free(R);
+		--BBST_ymr;
 		return temp;
 	}
 	--i;
@@ -211,6 +213,7 @@ BBST_node* BBST_delete(BBST_node* const R, const data_t D)
 		flag_shorter = RS;
 	}
 	free(srt.tar);
+	--BBST_ymr;
 	//rt = R;
 
 	while (flag_shorter != NS && i >= 0)
@@ -350,6 +353,8 @@ BBST_node* BBST_delete(BBST_node* const R, const data_t D)
 /* 根据结点数，获取平衡二叉树的最大深度 */
 unsigned int BBST_get_max_depth()
 {
-	/* 可用数学方法进行优化，暂时取一个固定值。 */
-	return 15U;
+	static const double Sqrt5 = 2.2360680,
+		Ln_phi = 0.4812118;	/* ln((1+sqrt(5))/2) */
+	return log(Sqrt5 * (double)BBST_ymr + 3.0) / Ln_phi - 2.0 + 1.0;
+	/* 最后加上个 1.0 更稳妥一些 */
 }
