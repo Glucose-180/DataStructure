@@ -43,8 +43,17 @@ int main()
 	// mergesort
 	for (i = 0U; i < n; ++i)
 		buf[i] = dt[i];
-	ymr = mergesort_g(buf, buffer, 0, n - 1);
+	ymr = (n > 0U ? mergesort_g(buf, buffer, 0, n - 1) : 0U);
 	cout << "After mergesort:\n\t";
+	for (i = 0U; i < n; ++i)
+		cout << buf[i] << ' ';
+	cout << "\n\tCounter: " << ymr << endl;
+
+	// list
+	for (i = 0U; i < n; ++i)
+		buf[i] = dt[i];
+	ymr = insertionsort_list(buf, n);
+	cout << "After listinsertionsort:\n\t";
 	for (i = 0U; i < n; ++i)
 		cout << buf[i] << ' ';
 	cout << "\n\tCounter: " << ymr << endl;

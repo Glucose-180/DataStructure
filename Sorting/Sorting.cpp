@@ -1,4 +1,5 @@
 #include "Sorting.h"
+#include <climits>
 
 data_t buffer[N];
 
@@ -86,6 +87,7 @@ static unsigned int heapadjust(data_t* const H, const unsigned int T, const unsi
 	return ymr;
 }
 
+// Sort H[0] to H[N-1], from less to great
 unsigned int heapsort_g(data_t* const H, const unsigned int N)
 {
 	unsigned int i = N / 2;
@@ -103,6 +105,7 @@ unsigned int heapsort_g(data_t* const H, const unsigned int N)
 	return ymr;
 }
 
+// Sort D[L] to D[R], from less to great
 unsigned int mergesort_g(data_t* const D, data_t* const Buf, const unsigned int L, const unsigned int R)
 {
 	unsigned int ymr = 0U;
@@ -132,5 +135,52 @@ unsigned int mergesort_g(data_t* const D, data_t* const Buf, const unsigned int 
 	// copying
 	for (k = L; k <= R; ++k)
 		D[k] = Buf[k];
+	return ymr;
+}
+
+// Sort H[0] to H[N-1], from less to great
+unsigned int insertionsort_list(data_t* const D, const unsigned int N)
+{
+	unsigned int ymr = 0U;
+	unsigned int* next = new unsigned int[N];
+	unsigned int head = 0U,	// point to the first data in D
+		i, j, k;
+
+	// First: insert
+	next[head] = UINT_MAX;	// initialize
+	for (i = 1U; i < N; ++i)
+	{	// insert D[i]
+		if (D[i] < D[head])
+			// set it as head
+			next[i] = head, head = i;
+		else
+		{
+			for (j = head, k = next[j]; k < UINT_MAX && D[k] < D[i]; j = k, k = next[k])
+				;
+			next[j] = i, next[i] = k;
+		}
+	}
+
+	// Then: rearrange
+	j = head;
+	for (i = 0U; i < N; ++i)
+	{
+		// find the data that should be set at D[i]
+		while (j < i)
+			j = next[j];
+		// k points to the next data to be arranged
+		k = next[j];
+		if (j != i)
+		{
+			unsigned int itemp;
+			// swap D[j] and D[i]
+			ymr += swap_g(D, i, j);
+			itemp = next[j], next[j] = next[i], next[i] = itemp;
+			// point to the data just moved
+			next[i] = j;
+		}
+		j = k;
+	}
+	delete[] next;
 	return ymr;
 }
