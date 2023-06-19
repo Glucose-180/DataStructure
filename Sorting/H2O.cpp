@@ -75,5 +75,14 @@ int main()
 	for (i = 0U; i < n; ++i)
 		cout << buf[i] << ' ';
 	cout << "\n\tCounter: " << ymr << endl;
+
+	// radixsort
+	for (i = 0U; i < n; ++i)
+		buf[i] = dt[i];
+	ymr = radixsort(buf, n);
+	cout << "After radixsort:\n\t";
+	for (i = 0U; i < n; ++i)
+		cout << buf[i] << ' ';
+	cout << "\n\tCounter: " << ymr << endl;
 	return 0;
 }

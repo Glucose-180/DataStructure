@@ -10,6 +10,7 @@ unsigned int mergesort_g(data_t* const D, data_t* const Buf, const unsigned int 
 unsigned int insertionsort_list(data_t* const D, const unsigned int N);
 unsigned int qsort_ng(data_t* const D, const unsigned int L, const unsigned int R);
 unsigned int selectionsort_list(data_t* const D, const unsigned int N);
+unsigned int radixsort(data_t* const D, const unsigned int N);
 
 // Size of buffer, also used for mergesort
 const unsigned int N = 100;
