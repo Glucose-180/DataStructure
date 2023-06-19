@@ -51,15 +51,15 @@ unsigned int qsort_g(data_t* const D, const unsigned int L, const unsigned int R
 
 	if (L >= R)
 		return ymr;
-	ymr += swap_g(D, L, (L + R) / 2);
+	ymr += swap_g(D, L, (L + R) / 2U);
 	last = L;
-	for (i = L + 1; i <= R; ++i)
+	for (i = L + 1U; i <= R; ++i)
 		if (dt_comp(D[i], D[L]) < 0)
 			ymr += swap_g(D, i, ++last);
 	ymr += swap_g(D, last, L);
-	if (last > 0)
-		ymr += qsort_g(D, L, last - 1);
-	ymr += qsort_g(D, last + 1, R);
+	if (last > 0U)
+		ymr += qsort_g(D, L, last - 1U);
+	ymr += qsort_g(D, last + 1U, R);
 	return ymr;
 }
 
@@ -72,10 +72,10 @@ static unsigned int heapadjust(data_t* const H, const unsigned int T, const unsi
 	unsigned int ymr = 0U;
 
 	temp = H[T];
-	for (i = 2 * t + 1; i < N; ++i)
+	for (i = 2U * t + 1U; i < N; ++i)
 	{	// Start from the left child of H[T]
 		// Search from top to bottom
-		if (i + 1 < N && dt_comp(H[i], H[i + 1]) < 0)
+		if (i + 1U < N && dt_comp(H[i], H[i + 1U]) < 0)
 			++i;	// select the greater child
 		if (dt_comp(temp, H[i]) >= 0)
 			// The inserting location of H[T] has been found
@@ -90,7 +90,7 @@ static unsigned int heapadjust(data_t* const H, const unsigned int T, const unsi
 // Sort H[0] to H[N-1], from less to great
 unsigned int heapsort_g(data_t* const H, const unsigned int N)
 {
-	unsigned int i = N / 2;
+	unsigned int i = N / 2U;
 	unsigned ymr = 0U;
 
 	while (i-- > 0U)
@@ -109,7 +109,7 @@ unsigned int heapsort_g(data_t* const H, const unsigned int N)
 unsigned int mergesort_g(data_t* const D, data_t* const Buf, const unsigned int L, const unsigned int R)
 {
 	unsigned int ymr = 0U;
-	unsigned int m = (L + R) / 2, i, j, k;
+	unsigned int m = (L + R) / 2U, i, j, k;
 
 	if (L >= R)
 		return ymr;
@@ -122,7 +122,7 @@ unsigned int mergesort_g(data_t* const D, data_t* const Buf, const unsigned int 
 	for (i = k = L, j = m + 1; i <= m && j <= R; ++k)
 	{
 		++ymr;
-		if (D[i] < D[j])
+		if (dt_comp(D[i], D[j]) < 0)
 			Buf[k] = D[i++];
 		else
 			Buf[k] = D[j++];
@@ -150,12 +150,13 @@ unsigned int insertionsort_list(data_t* const D, const unsigned int N)
 	next[head] = UINT_MAX;	// initialize
 	for (i = 1U; i < N; ++i)
 	{	// insert D[i]
-		if (D[i] < D[head])
+		if (dt_comp(D[i], D[head]) < 0)
 			// set it as head
 			next[i] = head, head = i;
 		else
 		{
-			for (j = head, k = next[j]; k < UINT_MAX && D[k] < D[i]; j = k, k = next[k])
+			for (j = head, k = next[j];
+				k < UINT_MAX && dt_comp(D[k], D[i]) < 0; j = k, k = next[k])
 				;
 			next[j] = i, next[i] = k;
 		}
@@ -182,5 +183,107 @@ unsigned int insertionsort_list(data_t* const D, const unsigned int N)
 		j = k;
 	}
 	delete[] next;
+	return ymr;
+}
+
+// Sort D[L] to D[R], from less to great
+// quick sort without recursion
+unsigned int qsort_ng(data_t* const D, const unsigned int L, const unsigned int R)
+{
+	typedef struct stack_t {
+		unsigned int l, r;
+	} stack_t;
+
+	stack_t* stack;
+
+	unsigned int ymr = 0U,
+		sp = 0U;	// stack pointer
+
+	if (R <= L)
+		return ymr;
+	stack = new stack_t[R - L + 1];
+	// push
+	stack[sp].l = L, stack[sp].r = R, ++sp;
+
+	while (sp > 0U)
+	{
+		unsigned int l, r, i, last;
+		// pop
+		l = stack[--sp].l, r = stack[sp].r;
+		if (r <= l)
+			continue;
+		if (r == l + 1)
+		{
+			if (dt_comp(D[l], D[r]) > 0)
+				ymr += swap_g(D, l, r);
+			continue;
+		}
+		// r - l >= 2U
+		ymr += swap_g(D, l, (l + r) / 2U);
+		last = l;
+		for (i = l + 1U; i <= r; ++i)
+			if (dt_comp(D[i], D[l]) < 0)
+				ymr += swap_g(D, i, ++last);
+		ymr += swap_g(D, last, l);
+		// push
+		if (last > 0U)
+			stack[sp].l = l, stack[sp].r = last - 1U, ++sp;
+		stack[sp].l = last + 1U, stack[sp].r = r, ++sp;
+	}
+	delete[] stack;
+	return ymr;
+}
+
+// Sort D[0] to D[N-1], from less to greater
+// using linked list
+unsigned int selectionsort_list(data_t* const D, const unsigned int N)
+{
+	typedef struct list_node {
+		data_t data;
+		list_node* next;
+	} lnode;
+	lnode* head, * p, * q, * temp;
+	unsigned int ymr = 0U, i;
+
+	if (N <= 0U)
+		return ymr;
+	// head node: it doesnot contain valid data
+	head = new lnode;
+	head->next = NULL;
+	for (i = 0U; i < N; ++i)
+	{	// generate a new node
+		temp = new lnode;
+		temp->data = D[i];
+		temp->next = head->next;
+		head->next = temp;
+	}
+	// begin sorting
+	for (p = head; p->next != NULL; p = p->next)
+	{	//select a node and hang it after p
+		temp = p;
+		for (q = p; q->next != NULL; q = q->next)
+		{	// let temp points to the prior of the minimum node after p
+			if (dt_comp(q->next->data, temp->next->data) < 0)
+				temp = q;
+		}
+		q = temp, temp = temp->next;
+		// now temp points to the minumum node
+		if (p->next != temp)
+		{	// hang temp after p
+			q->next = temp->next;
+			temp->next = p->next;
+			p->next = temp;
+			++ymr;
+		}
+	}
+	// write back
+	p = head->next;
+	delete head;
+	for (i = 0U; p != NULL; p = q, ++i)
+	{
+		q = p->next;
+		D[i] = p->data;
+		delete p;
+	}
 	return ymr;
 }

@@ -57,5 +57,23 @@ int main()
 	for (i = 0U; i < n; ++i)
 		cout << buf[i] << ' ';
 	cout << "\n\tCounter: " << ymr << endl;
+
+	// qsort without recursion
+	for (i = 0U; i < n; ++i)
+		buf[i] = dt[i];
+	ymr = (n > 0U ? qsort_ng(buf, 0U, n - 1U) : 0U);
+	cout << "After qsort without recursion:\n\t";
+	for (i = 0U; i < n; ++i)
+		cout << buf[i] << ' ';
+	cout << "\n\tCounter: " << ymr << endl;
+
+	// selectionsort using linked list
+	for (i = 0U; i < n; ++i)
+		buf[i] = dt[i];
+	ymr = selectionsort_list(buf, n);
+	cout << "After selectionsort using linked list:\n\t";
+	for (i = 0U; i < n; ++i)
+		cout << buf[i] << ' ';
+	cout << "\n\tCounter: " << ymr << endl;
 	return 0;
 }
