@@ -17,13 +17,13 @@ void malloc_init()
 
 	pav = (header*)allocbuf;
 	p = pav;
-	q = foot_loc(p);
 
 	p->next = p;
 	p->size = SL;
 	p->tag = FREE;
 	p->last = p;
 
+	q = foot_loc(p);
 	q->head = p;
 	q->tag = FREE;
 }
