@@ -63,6 +63,9 @@ void* malloc_g(const uint32_t Size)
 		h = f + 1;
 		h->size = n;
 		h->tag = OCCUPIED;
+		f = foot_loc(h);
+		f->head = h;
+		/* Set f->head = h for checking in free_g */
 	}
 	/* return the true address(after the header) */
 	return (void*)(h + 1);
@@ -78,6 +81,10 @@ void free_g(void* const P)
 	h = (header*)P - 1;
 	f = foot_loc(h);
 	n = h->size;
+
+	/* Check whether the block is allocated by malloc_g */
+	if (f->head != h)
+		return;
 
 	lf = h - 1;	/* foot of the left block */
 	if ((int8_t*)h - allocbuf <= 0)
